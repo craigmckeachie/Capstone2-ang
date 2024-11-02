@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Search Page</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       div {
         border: 1px solid black;
+        margin: 4px;
       }
 
-      #search-Label,
-      #radio-Container {
-        display: inline-block;
-        margin: 2%;
-      }
-
-      main {
+      section {
         display: flex;
         align-items: center;
       }
@@ -27,28 +28,32 @@
   </head>
   <body>
     <main>
-      <div id="search-Label">
-        <label> Search By: </label>
-      </div>
-
-      <div id="radio-Container">
-        <div>
-          <input name="radio-Btn" type="radio" id="location-radio" />
-          <label> Location </label>
+      <section>
+        <div id="search-Label">
+          <label> Search By: </label>
         </div>
-        <div>
-          <input name="radio-Btn" type="radio" id="parkType-radio" />
-          <label> Park Type</label>
+
+        <div id="radio-Container">
+          <div>
+            <input name="radio-Btn" type="radio" id="location-radio" />
+            <label> Location </label>
+          </div>
+          <div>
+            <input name="radio-Btn" type="radio" id="parkType-radio" />
+            <label> Park Type</label>
+          </div>
         </div>
-      </div>
 
-      <select id="location-DropDown" class="hide-display">
-        <option>Select One</option>
-      </select>
+        <select id="location-DropDown" class="hide-display">
+          <option>Select One</option>
+        </select>
 
-      <select id="parkType-DropDown" class="hide-display">
-        <option>Select One</option>
-      </select>
+        <select id="parkType-DropDown" class="hide-display">
+          <option>Select One</option>
+        </select>
+      </section>
+
+      <div id="displayLocationObj"></div>
     </main>
 
     <script src="./enjoy-the-outdoors/scripts/locationData.js"></script>

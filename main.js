@@ -43,4 +43,29 @@ function displayDropDown(radioInput, showDropDown, hideDropDown) {
     showDropDown.classList.remove("hide-display");
     hideElement.classList.add("hide-display");
   }
+  retrievingValue(showDropDown)
 }
+
+function retrievingValue(dropDownElement){
+    dropDownElement.addEventListener("change", () => {
+        const selectedState = dropDownElement.value
+        parsingArray(selectedState)
+
+    })   
+}
+
+function parsingArray(selectedValue){
+    const displayLocationObj = document.getElementById("displayLocationObj")
+    const matchingParks = []
+    nationalParksArray.forEach(park => {
+        if (selectedValue === park.State){
+            const newDiv = document.createElement("div")
+            newDiv.textContent = park
+            displayLocationObj.appendChild(newDiv)
+
+        }
+    })
+    console.log(matchingParks)
+
+}
+
