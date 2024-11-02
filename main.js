@@ -46,7 +46,7 @@ function displayDropDown(radioInput, showDropDown, hideDropDown) {
   retrievingValue(showDropDown)
 }
 
-function retrievingValue(dropDownElement){
+function retrievingValue(dropDownElement){ 
     dropDownElement.addEventListener("change", () => {
         const selectedState = dropDownElement.value
         parsingArray(selectedState)
@@ -56,16 +56,26 @@ function retrievingValue(dropDownElement){
 
 function parsingArray(selectedValue){
     const displayLocationObj = document.getElementById("displayLocationObj")
-    const matchingParks = []
+    displayLocationObj.textContent = ""
     nationalParksArray.forEach(park => {
-        if (selectedValue === park.State){
+        if (selectedValue === park.State){   
             const newDiv = document.createElement("div")
-            newDiv.textContent = park
-            displayLocationObj.appendChild(newDiv)
-
+            newDiv.textContent = JSON.stringify(park)
+            // displayLocationObj.appendChild(newDiv)
         }
     })
-    console.log(matchingParks)
-
+    displayTableData(nationalParksArray[0])
 }
 
+function displayTableData(obj){
+    const keys = Object.keys(obj)
+    const tableHeader = document.querySelector("thead")
+
+    keys.forEach(key => {
+        const header = document.createElement("th")
+        header.textContent = key
+        header.classList.add("table-header")
+        tableHeader.appendChild(header)
+    })
+    
+}
