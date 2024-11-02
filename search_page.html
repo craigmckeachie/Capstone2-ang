@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Page</title>
+    <style>
+      div {
+        border: 1px solid black;
+      }
+
+      #search-Label,
+      #radio-Container {
+        display: inline-block;
+        margin: 2%;
+      }
+
+      main {
+        display: flex;
+        align-items: center;
+      }
+
+      .hide-display {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="search-Label">
+        <label> Search By: </label>
+      </div>
+
+      <div id="radio-Container">
+        <div>
+          <input name="radio-Btn" type="radio" id="location-radio" />
+          <label> Location </label>
+        </div>
+        <div>
+          <input name="radio-Btn" type="radio" id="parkType-radio" />
+          <label> Park Type</label>
+        </div>
+      </div>
+
+      <select id="location-DropDown" class="hide-display">
+        <option>Select One</option>
+      </select>
+
+      <select id="parkType-DropDown" class="hide-display">
+        <option>Select One</option>
+      </select>
+    </main>
+
+    <script src="./enjoy-the-outdoors/scripts/locationData.js"></script>
+    <script src="./enjoy-the-outdoors/scripts/parkTypeData.js"></script>
+    <script src="./enjoy-the-outdoors/scripts/nationalParkData.js"></script>
+
+    <script src="main.js"></script>
+  </body>
+</html>
