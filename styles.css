@@ -1,3 +1,15 @@
 .table-header {
-    margin-right: 10px;
+    /* border: 1px solid red; */
+}
+
+table {
+    border: 1px solid black;
+    width: 100%;
+    /* table-layout: fixed; */
+}
+
+th, td {
+    width: fit-content;
+    text-align: center;
+    word-wrap: break-word;
 }
