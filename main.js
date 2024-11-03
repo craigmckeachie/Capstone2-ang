@@ -43,30 +43,40 @@ function displayDropDown(radioInput, showDropDown, hideDropDown) {
     showDropDown.classList.remove("hide-display");
     hideElement.classList.add("hide-display");
   }
-  retrievingValue(showDropDown);
+  capturingInput(showDropDown);
 }
 
-function retrievingValue(dropDownElement) {
+function capturingInput(dropDownElement) {
   dropDownElement.addEventListener("change", () => {
-    const selectedState = dropDownElement.value;
-    parsingArray(selectedState);
+    const selectedOption = dropDownElement.value;
+    parsingArray(dropDownElement, selectedOption);
   });
 }
 
-function parsingArray(selectedValue) {
-  const displayLocationObj = document.getElementById("displayLocationObj");
+function parsingArray(dropDownElement, selectedOption) {
   eraseTableData();
   createTableHeaders(nationalParksArray[1]);
   let tableHeadersArray = createTableHeaders(nationalParksArray[1]);
-
-  nationalParksArray.forEach((park) => {
-    if (selectedValue === park.State) {
-      const newDiv = document.createElement("div");
-      newDiv.textContent = JSON.stringify(park);
-      createTableData(tableHeadersArray, park);
-    }
-  });
+  if (dropDownElement.id === "location-DropDown") {
+    nationalParksArray.forEach((park) => {
+      if (selectedOption === park.State) {
+        const newDiv = document.createElement("div");
+        newDiv.textContent = JSON.stringify(park);
+        createTableData(tableHeadersArray, park);
+      }
+    });
+  } else {
+    nationalParksArray.forEach((park) => {
+        console.log(typeof(park.LocationName))
+        if (park.LocationName.includes(selectedOption)) {            
+          const newDiv = document.createElement("div");
+          newDiv.textContent = JSON.stringify(park);
+          createTableData(tableHeadersArray, park);
+        }
+      });
+  }
 }
+
 // i am using the array to make sure that parks with no visit website have an empty cell
 function createTableHeaders(obj) {
   const keys = Object.keys(obj);
@@ -89,8 +99,11 @@ function createTableData(tableHeadersArray, obj) {
 
   tableHeadersArray.forEach((header) => {
     const tableDataCell = document.createElement("td");
-    let tempVariable = Object.hasOwn(obj, header) ? (obj[header]) : ""
-    tableDataCell.textContent = typeof(tempVariable) === "object" ? JSON.stringify(tempVariable) : tempVariable
+    let tempVariable = Object.hasOwn(obj, header) ? obj[header] : "";
+    tableDataCell.textContent =
+      typeof tempVariable === "object"
+        ? JSON.stringify(tempVariable)
+        : tempVariable;
     row.appendChild(tableDataCell);
     tableBody.appendChild(row);
   });
@@ -100,4 +113,3 @@ function eraseTableData() {
   const tableBody = document.querySelector("tbody");
   tableBody.textContent = "";
 }
-
