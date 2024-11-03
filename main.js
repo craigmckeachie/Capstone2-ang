@@ -57,8 +57,16 @@ function capturingInput(dropDownElement) {
 
 function parsingArray(dropDownElement, selectedOption) {
   eraseTableData();
-  createTableHeaders(nationalParksArray[1]);
-  let tableHeadersArray = createTableHeaders(nationalParksArray[1]);
+  tempTableHeadersObj = {
+    LocationName: "Name",
+    Address: "Address",
+    City: "City",
+    State: "State",
+    ZipCode: "ZipCode",
+    Phone: "Phone",
+    Visit: "Visit",
+  };
+  let tableHeadersArray = createTableHeaders(tempTableHeadersObj);
   if (dropDownElement.id === "location-DropDown") {
     nationalParksArray.forEach((park) => {
       if (selectedOption === park.State) {
@@ -81,25 +89,26 @@ function parsingArray(dropDownElement, selectedOption) {
 
 // i am using the array to make sure that parks with no visit website have an empty cell
 function createTableHeaders(obj) {
-  const keys = Object.keys(obj);
+  const values = Object.values(obj);
   const tableHeader = document.querySelector("thead");
   tableHeader.textContent = "";
   const tableHeadersArray = [];
 
-  keys.forEach((key) => {
+  values.forEach((value) => {
     const header = document.createElement("th");
-    header.textContent = key;
+    header.textContent = value;
     tableHeader.appendChild(header);
-    tableHeadersArray.push(key);
+    tableHeadersArray.push(value);
   });
-  return tableHeadersArray;
+  return obj;
 }
 
 function createTableData(tableHeadersArray, obj) {
   const tableBody = document.querySelector("tbody");
   const row = document.createElement("tr");
+  tempArray = Object.keys(tableHeadersArray)
 
-  tableHeadersArray.forEach((header) => {
+  tempArray.forEach((header) => {
     const tableDataCell = document.createElement("td");
     let tempVariable = Object.hasOwn(obj, header) ? obj[header] : "";
     tableDataCell.textContent =
@@ -120,13 +129,13 @@ function eraseTableData() {
 
 //#region
 
-mountains_selectDropDown();
-function mountains_selectDropDown() {
-  const mountainDropDown = document.getElementById("mountainDropDown");
-  console.log(typeof(mountainDropDown));
-  mountainsArray.forEach((element) => {
-    const option = document.createElement("option");
-    option.textContent = element.name;
-    mountainDropDown.appendChild(option);
-  });
-}
+// mountains_selectDropDown();
+// function mountains_selectDropDown() {
+//   const mountainDropDown = document.getElementById("mountainDropDown");
+//   console.log(typeof(mountainDropDown));
+//   mountainsArray.forEach((element) => {
+//     const option = document.createElement("option");
+//     option.textContent = element.name;
+//     mountainDropDown.appendChild(option);
+//   });
+// }
