@@ -143,20 +143,26 @@ function mountains_PopulateDropDown() {
 function mountainsDisplayDropDown(dropDownElement) {
   const mountainDisplay = document.getElementById("mountainDisplayDropDown");
   dropDownElement.addEventListener("change", () => {
-    const mountainName = document.createElement("div");
-    mountainName.textContent = dropDownElement.value;
-    mountainDisplay.appendChild(mountainName);
-    searchMountainImage(mountainDisplay, mountainName);
+    if (dropDownElement.value != "Select One") {
+      mountainDisplay.textContent = "";
+      const mountainName = document.createElement("div");
+      mountainName.textContent = "Mountain Name: " + dropDownElement.value;
+      mountainDisplay.appendChild(mountainName);
+      searchMountainImage(mountainDisplay, dropDownElement.value);
+    } else {
+        mountainDisplay.textContent = "";
+    }
   });
 }
 
 function searchMountainImage(mountainDisplay, mountainName) {
   let image;
   mountainsArray.forEach((mountain) => {
-    if (mountain.name === mountainName.textContent) {
+    if (mountain.name === mountainName) {
       image = mountain.img;
       addMountainImage(mountainDisplay, image);
       addMountainattr(mountainDisplay, mountain);
+      addDescription(mountainDisplay, mountain);
     }
   });
 }
@@ -169,14 +175,20 @@ function addMountainImage(mountainDisplay, image) {
 }
 
 function addMountainattr(mountainDisplay, mountain) {
-    const attrDiv = document.createElement("div")
+  const attrDiv = document.createElement("div");
   const elevationInfo = document.createElement("div");
   const effortInfo = document.createElement("div");
-  elevationInfo.textContent = mountain.elevation;
-  effortInfo.textContent = mountain.effort;
-  elevationInfo.classList = "card-details"
+  elevationInfo.textContent = "Elevation: " + mountain.elevation;
+  effortInfo.textContent = "Effort: " + mountain.effort;
+  elevationInfo.classList = "card-details";
   effortInfo.classList = "card-details";
-  attrDiv.appendChild(elevationInfo)
-  attrDiv.appendChild(effortInfo)
+  attrDiv.appendChild(elevationInfo);
+  attrDiv.appendChild(effortInfo);
   mountainDisplay.appendChild(attrDiv);
+}
+
+function addDescription(mountainDisplay, mountain) {
+  const description = document.createElement("div");
+  description.textContent = mountain.desc;
+  mountainDisplay.appendChild(description);
 }
