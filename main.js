@@ -1,5 +1,7 @@
-selectDropDown();
-function selectDropDown() {
+//#region  national park functions
+
+nationalPark_selectDropDown();
+function nationalPark_selectDropDown() {
   const allRadios = document.querySelectorAll("input[type='radio']");
   allRadios.forEach((radio) => {
     radio.addEventListener("click", () => {
@@ -67,13 +69,13 @@ function parsingArray(dropDownElement, selectedOption) {
     });
   } else {
     nationalParksArray.forEach((park) => {
-        console.log(typeof(park.LocationName))
-        if (park.LocationName.includes(selectedOption)) {            
-          const newDiv = document.createElement("div");
-          newDiv.textContent = JSON.stringify(park);
-          createTableData(tableHeadersArray, park);
-        }
-      });
+      console.log(typeof park.LocationName);
+      if (park.LocationName.includes(selectedOption)) {
+        const newDiv = document.createElement("div");
+        newDiv.textContent = JSON.stringify(park);
+        createTableData(tableHeadersArray, park);
+      }
+    });
   }
 }
 
@@ -112,4 +114,19 @@ function createTableData(tableHeadersArray, obj) {
 function eraseTableData() {
   const tableBody = document.querySelector("tbody");
   tableBody.textContent = "";
+}
+
+//#endregion
+
+//#region
+
+mountains_selectDropDown();
+function mountains_selectDropDown() {
+  const mountainDropDown = document.getElementById("mountainDropDown");
+  console.log(typeof(mountainDropDown));
+  mountainsArray.forEach((element) => {
+    const option = document.createElement("option");
+    option.textContent = element.name;
+    mountainDropDown.appendChild(option);
+  });
 }
