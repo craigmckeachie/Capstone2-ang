@@ -106,7 +106,7 @@ function createTableHeaders(obj) {
 function createTableData(tableHeadersArray, obj) {
   const tableBody = document.querySelector("tbody");
   const row = document.createElement("tr");
-  tempArray = Object.keys(tableHeadersArray)
+  tempArray = Object.keys(tableHeadersArray);
 
   tempArray.forEach((header) => {
     const tableDataCell = document.createElement("td");
@@ -137,27 +137,46 @@ function mountains_PopulateDropDown() {
     option.textContent = element.name;
     mountainDropDown.appendChild(option);
   });
-  mountainsDisplayDropDown(mountainDropDown)
+  mountainsDisplayDropDown(mountainDropDown);
 }
 
 function mountainsDisplayDropDown(dropDownElement) {
-    const mountainDisplay = document.getElementById("mountainDisplayDropDown");
-    dropDownElement.addEventListener("change", () => {
-        const mountainName = document.createElement("div")
-        mountainName.textContent = dropDownElement.value
-        mountainDisplay.appendChild(mountainName)
-        searchMountainImage(mountainName)
-    })
-  }
-
-function searchMountainImage(mountainName){
-    let mountainImage;
-    mountainsArray.find((mountain) => { mountain.name === mountainName.textContent ? mountainImage =  mountain.img : "no match"
-    })
-    console.log("Mountain Image", mountainImage)
+  const mountainDisplay = document.getElementById("mountainDisplayDropDown");
+  dropDownElement.addEventListener("change", () => {
+    const mountainName = document.createElement("div");
+    mountainName.textContent = dropDownElement.value;
+    mountainDisplay.appendChild(mountainName);
+    searchMountainImage(mountainDisplay, mountainName);
+  });
 }
-function addMountainImage(){
-    const mountainImage = document.createElement("div")
-    mountainImage.textContent 
 
+function searchMountainImage(mountainDisplay, mountainName) {
+  let image;
+  mountainsArray.forEach((mountain) => {
+    if (mountain.name === mountainName.textContent) {
+      image = mountain.img;
+      addMountainImage(mountainDisplay, image);
+      addMountainattr(mountainDisplay, mountain);
+    }
+  });
+}
+function addMountainImage(mountainDisplay, image) {
+  const mountainImageDiv = document.createElement("div");
+  let imageElement = document.createElement("img");
+  imageElement.src = `./enjoy-the-outdoors/images/${image}`;
+  mountainImageDiv.appendChild(imageElement);
+  mountainDisplay.appendChild(mountainImageDiv);
+}
+
+function addMountainattr(mountainDisplay, mountain) {
+    const attrDiv = document.createElement("div")
+  const elevationInfo = document.createElement("div");
+  const effortInfo = document.createElement("div");
+  elevationInfo.textContent = mountain.elevation;
+  effortInfo.textContent = mountain.effort;
+  elevationInfo.classList = "card-details"
+  effortInfo.classList = "card-details";
+  attrDiv.appendChild(elevationInfo)
+  attrDiv.appendChild(effortInfo)
+  mountainDisplay.appendChild(attrDiv);
 }
