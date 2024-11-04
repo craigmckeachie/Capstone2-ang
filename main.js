@@ -5,49 +5,47 @@ function nationalPark_selectDropDown() {
   const allRadios = document.querySelectorAll("input[type='radio']");
   allRadios.forEach((radio) => {
     radio.addEventListener("click", () => {
-      clickRadio(radio);
+      resetDropdown()
+      displayDropDown(populateDropDown(radio, selectedDropdown(radio), selectedArray(radio)))
+
     });
-  });
+  })
 }
 
-function clickRadio(radio) {
-  if (radio.id === "location-radio") {
-    populateDropDown(
-      radio,
-      "location-DropDown",
-      "parkType-DropDown",
-      locationsArray
-    );
-  } else if (radio.id === "parkType-radio") {
-    populateDropDown(
-      radio,
-      "parkType-DropDown",
-      "location-DropDown",
-      parkTypesArray
-    );
-  }
+function selectedDropdown(radio) {
+  const selectedDropdown = (radio.id === "location-radio") ? "location-DropDown" : "parkType-DropDown"
+  return selectedDropdown 
 }
 
-function populateDropDown(radioInput, showDropDown, hideDropDown, array) {
-  const dropDown = document.getElementById(showDropDown);
-  dropDown.length = 1;
-  displayDropDown(radioInput, dropDown, hideDropDown);
+function selectedArray(radio) {
+  const selectedArray = (radio.id === "location-radio") ? locationsArray : parkTypesArray
+  return selectedArray
+}
+
+function populateDropDown(radioInput, dropDownID, array) {
+  const dropDown = document.getElementById(dropDownID);
+  //dropDown.length = 1;
   array.forEach((element) => {
     const option = document.createElement("option");
     option.textContent = element;
     dropDown.appendChild(option);
   });
+  return { radioInput, dropDown }
+}
+function resetDropdown(){
+  const allSelect = document.querySelectorAll("select");
+  allSelect.forEach((select) => {
+      select.classList.add("hide-display")
+  })
 }
 
-function displayDropDown(radioInput, showDropDown, hideDropDown) {
-  const hideElement = document.getElementById(hideDropDown);
-  if (radioInput.checked) {
-    showDropDown.classList.remove("hide-display");
-    hideElement.classList.add("hide-display");
-  }
-  capturingInput(showDropDown);
+function displayDropDown(obj) {
+  radioInput =  obj.radioInput
+  dropDown =  obj.dropDown
+  const activeDropdown = (radioInput.checked ? dropDown.classList.remove("hide-display"): dropDown.classList.add("hide-display"))
+  capturingInput(dropDown);
 }
-
+  
 function capturingInput(dropDownElement) {
   dropDownElement.addEventListener("change", () => {
     const selectedOption = dropDownElement.value;
@@ -127,7 +125,7 @@ function eraseTableData() {
 
 //#endregion
 
-//#region
+//#region  mountain page
 
 mountains_PopulateDropDown();
 function mountains_PopulateDropDown() {
@@ -150,7 +148,7 @@ function mountainsDisplayDropDown(dropDownElement) {
       mountainDisplay.appendChild(mountainName);
       searchMountainImage(mountainDisplay, dropDownElement.value);
     } else {
-        mountainDisplay.textContent = "";
+      mountainDisplay.textContent = "";
     }
   });
 }
@@ -192,3 +190,5 @@ function addDescription(mountainDisplay, mountain) {
   description.textContent = mountain.desc;
   mountainDisplay.appendChild(description);
 }
+
+//#endregion

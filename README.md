@@ -1,0 +1,1 @@
+Functions should be efficient, readable, and maintainable.
