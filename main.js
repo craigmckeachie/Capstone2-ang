@@ -1,71 +1,74 @@
 //#region  national park functions
 
-nationalPark_selectDropDown();
-function nationalPark_selectDropDown() {
+function initializeParksPage() {
   const allRadios = document.querySelectorAll("input[type='radio']");
   allRadios.forEach((radio) => {
     radio.addEventListener("click", () => {
-      resetDropdown()
-      displayDropDown(populateDropDown(radio, selectedDropdown(radio), selectedArray(radio)))
-
+      hideAllDropdowns();
+      let filterType = radio.value;
+      let selectedDropdown = getSelectedDropdown(filterType);
+      populateDropDown(selectedDropdown, getSelectedArray(filterType));
+      displayDropdown(selectedDropdown);
+      handleChange(selectedDropdown, filterType);
     });
-  })
+  });
 }
 
-function selectedDropdown(radio) {
-  const selectedDropdown = (radio.id === "location-radio") ? "location-DropDown" : "parkType-DropDown"
-  return selectedDropdown 
+initializeParksPage();
+
+function getSelectedDropdown(filterType) {
+  switch (filterType) {
+    case "location":
+      return document.getElementById("location-dropdown");
+    case "parkType":
+      return document.getElementById("parkType-dropdown");
+    default:
+      throw new Error("invalid filter type");
+  }
 }
 
-function selectedArray(radio) {
-  const selectedArray = (radio.id === "location-radio") ? locationsArray : parkTypesArray
-  return selectedArray
+function getSelectedArray(filterType) {
+  switch (filterType) {
+    case "location":
+      return locationsArray;
+    case "parkType":
+      return parkTypesArray;
+    default:
+      throw new Error("invalid filter type");
+  }
 }
 
-function populateDropDown(radioInput, dropDownID, array) {
-  const dropDown = document.getElementById(dropDownID);
-  //dropDown.length = 1;
+function populateDropDown(dropDown, array) {
   array.forEach((element) => {
     const option = document.createElement("option");
     option.textContent = element;
     dropDown.appendChild(option);
   });
-  return { radioInput, dropDown }
-}
-function resetDropdown(){
-  const allSelect = document.querySelectorAll("select");
-  allSelect.forEach((select) => {
-      select.classList.add("hide-display")
-  })
 }
 
-function displayDropDown(obj) {
-  radioInput =  obj.radioInput
-  dropDown =  obj.dropDown
-  const activeDropdown = (radioInput.checked ? dropDown.classList.remove("hide-display"): dropDown.classList.add("hide-display"))
-  capturingInput(dropDown);
-}
-  
-function capturingInput(dropDownElement) {
-  dropDownElement.addEventListener("change", () => {
-    const selectedOption = dropDownElement.value;
-    parsingArray(dropDownElement, selectedOption);
+function hideAllDropdowns() {
+  const allSelect = document.querySelectorAll("select");
+  allSelect.forEach((select) => {
+    select.classList.add("hide-display");
   });
 }
 
-function parsingArray(dropDownElement, selectedOption) {
+function displayDropdown(dropdown) {
+  dropdown.classList.remove("hide-display");
+}
+
+function handleChange(dropDownElement, filterType) {
+  dropDownElement.addEventListener("change", () => {
+    const selectedOption = dropDownElement.value;
+    loadTable(selectedOption, filterType);
+  });
+}
+
+function loadTable(selectedOption, filterType) {
   eraseTableData();
-  tempTableHeadersObj = {
-    LocationName: "Name",
-    Address: "Address",
-    City: "City",
-    State: "State",
-    ZipCode: "ZipCode",
-    Phone: "Phone",
-    Visit: "Visit",
-  };
-  let tableHeadersArray = createTableHeaders(tempTableHeadersObj);
-  if (dropDownElement.id === "location-DropDown") {
+
+  let tableHeadersArray = createTableHeaders();
+  if (filterType === "location") {
     nationalParksArray.forEach((park) => {
       if (selectedOption === park.State) {
         const newDiv = document.createElement("div");
@@ -86,8 +89,17 @@ function parsingArray(dropDownElement, selectedOption) {
 }
 
 // i am using the array to make sure that parks with no visit website have an empty cell
-function createTableHeaders(obj) {
-  const values = Object.values(obj);
+function createTableHeaders() {
+  propertyNameToHeaderName = {
+    LocationName: "Name",
+    Address: "Address",
+    City: "City",
+    State: "State",
+    ZipCode: "ZipCode",
+    Phone: "Phone",
+    Visit: "Visit",
+  };
+  const values = Object.values(propertyNameToHeaderName);
   const tableHeader = document.querySelector("thead");
   tableHeader.textContent = "";
   const tableHeadersArray = [];
@@ -98,21 +110,18 @@ function createTableHeaders(obj) {
     tableHeader.appendChild(header);
     tableHeadersArray.push(value);
   });
-  return obj;
+  return propertyNameToHeaderName;
 }
 
-function createTableData(tableHeadersArray, obj) {
+function createTableData(tableHeadersArray, object) {
   const tableBody = document.querySelector("tbody");
   const row = document.createElement("tr");
-  tempArray = Object.keys(tableHeadersArray);
+  const headers = Object.keys(tableHeadersArray);
 
-  tempArray.forEach((header) => {
+  headers.forEach((propertyName) => {
     const tableDataCell = document.createElement("td");
-    let tempVariable = Object.hasOwn(obj, header) ? obj[header] : "";
-    tableDataCell.textContent =
-      typeof tempVariable === "object"
-        ? JSON.stringify(tempVariable)
-        : tempVariable;
+    let propertyValue = Object.hasOwn(object, propertyName) ? object[propertyName] : "";
+    tableDataCell.textContent = typeof propertyValue === "object" ? JSON.stringify(propertyValue) : propertyValue;
     row.appendChild(tableDataCell);
     tableBody.appendChild(row);
   });
@@ -130,6 +139,7 @@ function eraseTableData() {
 mountains_PopulateDropDown();
 function mountains_PopulateDropDown() {
   const mountainDropDown = document.getElementById("mountainDropDown");
+  if (!mountainDropDown) return;
   mountainsArray.forEach((element) => {
     const option = document.createElement("option");
     option.textContent = element.name;
@@ -164,6 +174,7 @@ function searchMountainImage(mountainDisplay, mountainName) {
     }
   });
 }
+
 function addMountainImage(mountainDisplay, image) {
   const mountainImageDiv = document.createElement("div");
   let imageElement = document.createElement("img");
